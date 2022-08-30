@@ -4,6 +4,8 @@ leftWristX = "";
 leftWristY = "";
 rightWristX = "";
 rightWristY = "";
+scoreleftWrist = 0;
+song_status = "";
 
 function preload() {
     hedwig = loadSound("Hedwig.mp3");
@@ -20,6 +22,20 @@ function setup(){
 }
 function draw(){
     image(video, 0, 0, 600, 500);
+    
+    fill("#08FF08");
+    stroke("#08FF08");
+   song_status = pp.isPlaying();
+   
+   if(scoreLeftWrist > 0.2) {
+    circle(leftWristX, leftWristY, 20);
+    hedwig.stop();
+    if(song_status = false) {
+        song_status = pp.isPlaying();
+        document.getElementById("played_song").innerHTML = "Song playing : Peter Pan Theme";
+       }
+   }
+   
 }
 function play(){
     song.play();
@@ -30,6 +46,8 @@ function modelLoaded(){
 function gotPoses(results){
     if(results.length > 0){
         console.log(results);
+        scoreLeftWrist = results[0].pose.keypoints[9].score;
+    console.log("scoreLeftWrist = " + scoreLeftWrist);
 
         leftWristX = results[0].pose.leftWrist.x;
         leftWristY = results[0].pose.leftWrist.y;
@@ -38,5 +56,6 @@ function gotPoses(results){
         rightWristX = results[0].pose.rightWrist.x;
         rightWristY = results[0].pose.rightWrist.y;
         console.log("rightWristX = " + rightWristX + "rightWristY = " + rightWristY);
+
     }
 }
